@@ -4,6 +4,10 @@ import AppError from "../../../errors/AppError";
 import listProductsService from "../services/listProductsService";
 import showProductService from "../services/showProductService";
 import updateProductService from "../services/updateProductService";
+import deleteProductService from "../services/deleteProductService";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 
 export default class productsController {
@@ -54,6 +58,24 @@ export default class productsController {
         const updateProduct = await product.update({uuid, name, price, quantity});
 
         return res.json(updateProduct);
+    }
+
+    static async delete(req: Request, res: Response) : Promise<Response | any> {
+
+        const { uuid } = req.params;
+
+        const product = await prisma.products.findFirst({
+            where: {
+                uuid: uuid
+            }
+        })
+
+        const deleteProduct = new deleteProductService();
+
+        const softDelete = await deleteProduct.delete({uuid});
+
+            return res.json(`Seu produto ${product?.name} foi deletado.`)
+ 
     }
 
 }
