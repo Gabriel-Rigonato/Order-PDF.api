@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { Request, Response } from "express";
+import productsController from "../controllers/productsControllers";
 
 const productsRouter = Router();
 
-productsRouter.use('/controllers',  (req: Request, res: Response)=>{
-    res.json('alo')
-});
+productsRouter.get('/', productsController.index);
+productsRouter.post('/create', productsController.create);
+productsRouter.get('/:uuid', productsController.show);
+productsRouter.put('/:uuid/update', productsController.update)
 
 export default productsRouter;
