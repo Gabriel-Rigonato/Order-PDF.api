@@ -4,6 +4,7 @@ import listUserService from "../services/listUserService";
 import showUserService from "../services/showUserService";
 import deleteUserService from "../services/deleteUserService";
 
+
 export default class userController {
     static async create(req: Request, res: Response): Promise<Response> {
 

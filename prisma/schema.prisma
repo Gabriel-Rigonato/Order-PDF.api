@@ -17,15 +17,20 @@ model products {
   updated_at DateTime? @db.Timestamp(0)
   deleted_at DateTime? @db.Timestamp(0)
   active     Boolean?  @default(true)
+  user_id    Int
+  users      users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_userProducts")
+
+  @@index([user_id], map: "fk_userProducts")
 }
 
 model users {
-  id         Int       @id @default(autoincrement())
-  uuid       String    @db.VarChar(255)
-  password   String    @db.VarChar(255)
-  created_at DateTime? @db.Timestamp(0)
-  updated_at DateTime? @db.Timestamp(0)
-  deleted_at DateTime? @db.Timestamp(0)
-  active     Boolean?  @default(true)
-  email      String    @unique(map: "email") @db.VarChar(255)
+  id         Int        @id @default(autoincrement())
+  uuid       String     @db.VarChar(255)
+  password   String     @db.VarChar(255)
+  created_at DateTime?  @db.Timestamp(0)
+  updated_at DateTime?  @db.Timestamp(0)
+  deleted_at DateTime?  @db.Timestamp(0)
+  active     Boolean?   @default(true)
+  email      String     @unique(map: "email") @db.VarChar(255)
+  products   products[]
 }
