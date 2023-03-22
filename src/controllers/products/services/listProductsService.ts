@@ -1,6 +1,4 @@
-import { Prisma, products } from "@prisma/client";
-import { Request, Response } from "express";
-import AppError from "../../../errors/AppError";
+import {  products } from "@prisma/client";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();

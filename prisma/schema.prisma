@@ -18,3 +18,14 @@ model products {
   deleted_at DateTime? @db.Timestamp(0)
   active     Boolean?  @default(true)
 }
+
+model users {
+  id         Int       @id @default(autoincrement())
+  uuid       String    @db.VarChar(255)
+  password   String    @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+  deleted_at DateTime? @db.Timestamp(0)
+  active     Boolean?  @default(true)
+  email      String    @unique(map: "email") @db.VarChar(255)
+}

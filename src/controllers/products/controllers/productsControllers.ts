@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import createProductService from "../services/createProductService";
-import AppError from "../../../errors/AppError";
 import listProductsService from "../services/listProductsService";
 import showProductService from "../services/showProductService";
 import updateProductService from "../services/updateProductService";
