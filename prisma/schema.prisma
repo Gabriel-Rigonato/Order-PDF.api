@@ -43,6 +43,7 @@ model customers {
   created_at     DateTime? @db.Timestamp(0)
   updated_at     DateTime? @db.Timestamp(0)
   deleted_at     DateTime? @db.Timestamp(0)
+  active         Boolean?  @default(true)
   users          users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_UserCustomer")
 
   @@index([user_id], map: "fk_UserCustomer")
@@ -53,10 +54,11 @@ model shopkeeper {
   uuid       String    @db.VarChar(255)
   user_id    Int?
   name       String    @db.VarChar(255)
-  cnpj       String    @db.VarChar(255)
   created_at DateTime? @db.Timestamp(0)
   updated_at DateTime? @db.Timestamp(0)
   deleted_at DateTime? @db.Timestamp(0)
+  active     Boolean?  @default(true)
+  cnpj       Int       @unique(map: "cnpj")
   users      users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_UserShops")
 
   @@index([user_id], map: "fk_UserShops")
