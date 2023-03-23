@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { PrismaClient, users } from '@prisma/client';
 import { uuid } from 'uuidv4';
+import { hash } from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -23,11 +24,14 @@ export default class createUserService {
             throw new Error('This User Already exists.')
         }
 
+        const hashedPassword = await hash(password, 10);
+
         const user = await prisma.users.create({
             data:{
+                //uuidv4
                 uuid: uuid(),
                 email: email,
-                password: password,
+                password: hashedPassword,
                 created_at: new Date,
             }
         })

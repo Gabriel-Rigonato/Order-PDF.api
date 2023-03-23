@@ -43,6 +43,7 @@ export default class userController {
         
         const deleteUser = new deleteUserService();
 
+        //Soft Delete in here
         const user = await deleteUser.delete({uuid});
 
         return res.json(`O usuário ${user} foi deletado.`)
