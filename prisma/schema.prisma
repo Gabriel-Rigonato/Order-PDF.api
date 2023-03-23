@@ -17,20 +17,47 @@ model products {
   updated_at DateTime? @db.Timestamp(0)
   deleted_at DateTime? @db.Timestamp(0)
   active     Boolean?  @default(true)
-  user_id    Int
-  users      users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_userProducts")
-
-  @@index([user_id], map: "fk_userProducts")
 }
 
 model users {
-  id         Int        @id @default(autoincrement())
-  uuid       String     @db.VarChar(255)
-  password   String     @db.VarChar(255)
-  created_at DateTime?  @db.Timestamp(0)
-  updated_at DateTime?  @db.Timestamp(0)
-  deleted_at DateTime?  @db.Timestamp(0)
-  active     Boolean?   @default(true)
-  email      String     @unique(map: "email") @db.VarChar(255)
-  products   products[]
+  id         Int          @id @default(autoincrement())
+  uuid       String       @db.VarChar(255)
+  password   String       @db.VarChar(255)
+  created_at DateTime?    @db.Timestamp(0)
+  updated_at DateTime?    @db.Timestamp(0)
+  deleted_at DateTime?    @db.Timestamp(0)
+  active     Boolean?     @default(true)
+  email      String       @unique(map: "email") @db.VarChar(255)
+  customers  customers[]
+  shopkeeper shopkeeper[]
+}
+
+model customers {
+  id             Int       @id @default(autoincrement())
+  uuid           String    @db.VarChar(255)
+  user_id        Int?
+  name           String    @db.VarChar(255)
+  cpf            String    @db.VarChar(255)
+  address        String    @db.VarChar(255)
+  address_number String    @db.VarChar(255)
+  created_at     DateTime? @db.Timestamp(0)
+  updated_at     DateTime? @db.Timestamp(0)
+  deleted_at     DateTime? @db.Timestamp(0)
+  users          users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_UserCustomer")
+
+  @@index([user_id], map: "fk_UserCustomer")
+}
+
+model shopkeeper {
+  id         Int       @id @default(autoincrement())
+  uuid       String    @db.VarChar(255)
+  user_id    Int?
+  name       String    @db.VarChar(255)
+  cnpj       String    @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+  deleted_at DateTime? @db.Timestamp(0)
+  users      users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_UserShops")
+
+  @@index([user_id], map: "fk_UserShops")
 }
