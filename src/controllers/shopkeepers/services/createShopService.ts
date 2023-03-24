@@ -19,6 +19,16 @@ export default class createShopService {
             }
         });
 
+        const cpnjExists = await prisma.shopkeeper.findFirst({
+            where:{
+                cnpj: cnpj
+            }
+        });
+
+        if(cpnjExists) {
+            throw new Error('This cnpj already exists.')
+        }
+
         const shopkeeper = await prisma.shopkeeper.create({
            data:{
             uuid: uuidv4(),
