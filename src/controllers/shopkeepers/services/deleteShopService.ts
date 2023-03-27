@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, shopkeeper } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -8,7 +8,7 @@ interface IRequest{
 
 export default class deleteShopService {
 
-    public async delete ({uuid}: IRequest) : Promise <void> {
+    public async delete ({uuid}: IRequest) : Promise < shopkeeper> {
         const user = await prisma.shopkeeper.findFirst({
             where:{
                 uuid: uuid
@@ -23,5 +23,7 @@ export default class deleteShopService {
                 active: false
             }
         });
+
+        return deleteShop;
     }
 }

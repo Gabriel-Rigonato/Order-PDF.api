@@ -10,7 +10,7 @@ interface IRequest {
 
 export default class updateShopService {
 
-    public async update ({name, cnpj, uuid} : IRequest ) : Promise <shopkeeper> {
+    public async update ({uuid, name, cnpj} : IRequest ) : Promise <shopkeeper> {
 
 
         const cnpjExists = await prisma.shopkeeper.findFirst({
