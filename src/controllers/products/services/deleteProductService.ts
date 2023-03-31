@@ -22,12 +22,9 @@ export default class deleteProductService {
             throw new Error('This product was deleted.');
         }
 
-        const deleteProdut = await prisma.products.update({
+        const deleteProdut = await prisma.products.delete({
             where:{
                 id: product.id
-            },
-            data:{
-                 active: false
             }
         })
     }

@@ -8,15 +8,18 @@ datasource db {
 }
 
 model products {
-  id         Int       @id @default(autoincrement())
-  uuid       String    @db.VarChar(255)
-  name       String    @db.VarChar(255)
-  price      Decimal   @db.Decimal(10, 0)
-  quantity   Decimal   @db.Decimal(10, 0)
-  created_at DateTime? @db.Timestamp(0)
-  updated_at DateTime? @db.Timestamp(0)
-  deleted_at DateTime? @db.Timestamp(0)
-  active     Boolean?  @default(true)
+  id            Int         @id @default(autoincrement())
+  uuid          String      @db.VarChar(255)
+  name          String      @db.VarChar(255)
+  price         Decimal     @db.Decimal(10, 0)
+  quantity      Decimal     @db.Decimal(10, 0)
+  created_at    DateTime?   @db.Timestamp(0)
+  updated_at    DateTime?   @db.Timestamp(0)
+  deleted_at    DateTime?   @db.Timestamp(0)
+  shopkeeper_id Int?
+  shopkeeper    shopkeeper? @relation(fields: [shopkeeper_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_productsShopkeeper")
+
+  @@index([shopkeeper_id], map: "fk_productsShopkeeper")
 }
 
 model users {
@@ -50,16 +53,17 @@ model customers {
 }
 
 model shopkeeper {
-  id         Int       @id @default(autoincrement())
-  uuid       String    @db.VarChar(255)
+  id         Int        @id @default(autoincrement())
+  uuid       String     @db.VarChar(255)
   user_id    Int?
-  name       String    @db.VarChar(255)
-  created_at DateTime? @db.Timestamp(0)
-  updated_at DateTime? @db.Timestamp(0)
-  deleted_at DateTime? @db.Timestamp(0)
-  active     Boolean?  @default(true)
-  cnpj       Int       @unique(map: "cnpj")
-  users      users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_UserShops")
+  name       String     @db.VarChar(255)
+  created_at DateTime?  @db.Timestamp(0)
+  updated_at DateTime?  @db.Timestamp(0)
+  deleted_at DateTime?  @db.Timestamp(0)
+  active     Boolean?   @default(true)
+  cnpj       Int        @unique(map: "cnpj")
+  products   products[]
+  users      users?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_UserShops")
 
   @@index([user_id], map: "fk_UserShops")
 }
