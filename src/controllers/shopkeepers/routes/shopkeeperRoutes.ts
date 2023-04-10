@@ -7,3 +7,5 @@ shopkeeperRouter.get('/', shopkeeperController.index);
 shopkeeperRouter.post('/create', shopkeeperController.create);
 shopkeeperRouter.put('/:uuid', shopkeeperController.update);
 shopkeeperRouter.delete('/:uuid', shopkeeperController.delete);
+
+export default shopkeeperRouter;
