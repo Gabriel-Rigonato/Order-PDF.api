@@ -14,7 +14,6 @@ export default class deleteProductService {
         const product = await prisma.products.findFirst({
             where:{
                 uuid: uuid,
-                active: true
             }
         })
 
