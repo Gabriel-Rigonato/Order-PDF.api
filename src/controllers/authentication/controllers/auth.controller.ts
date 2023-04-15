@@ -12,7 +12,7 @@ export default class AuthController {
 
         const login = await loginService.login({email, password});
 
-       return res.json(login);
+       return res.json(`Authorized login ${login.email}`);
        
       } catch (error){
          throw new AppError('Login error.')
