@@ -7,63 +7,37 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model products {
-  id            Int         @id @default(autoincrement())
-  uuid          String      @db.VarChar(255)
-  name          String      @db.VarChar(255)
-  price         Decimal     @db.Decimal(10, 0)
-  quantity      Decimal     @db.Decimal(10, 0)
-  created_at    DateTime?   @db.Timestamp(0)
-  updated_at    DateTime?   @db.Timestamp(0)
-  deleted_at    DateTime?   @db.Timestamp(0)
-  shopkeeper_id Int?
-  shopkeeper    shopkeeper? @relation(fields: [shopkeeper_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_productsShopkeeper")
+model product {
+  id         Int       @id @default(autoincrement())
+  uuid       String    @db.VarChar(255)
+  name       String    @db.VarChar(255)
+  price      Decimal   @db.Decimal(10, 3)
+  quantity   Int
+  status     STATUS
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+  deleted_at DateTime?
+  seller_id  Int?
+  seller     seller?   @relation(fields: [seller_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_productsShopkeeper")
 
-  @@index([shopkeeper_id], map: "fk_productsShopkeeper")
+  @@index([seller_id], map: "fk_productsSeller")
 }
 
-model users {
-  id         Int          @id @default(autoincrement())
-  uuid       String       @db.VarChar(255)
-  password   String       @db.VarChar(255)
-  created_at DateTime?    @db.Timestamp(0)
-  updated_at DateTime?    @db.Timestamp(0)
-  deleted_at DateTime?    @db.Timestamp(0)
-  active     Boolean?     @default(true)
-  email      String       @unique(map: "email") @db.VarChar(255)
-  customers  customers[]
-  shopkeeper shopkeeper[]
+model seller {
+  id         Int       @id @default(autoincrement())
+  uuid       String    @db.VarChar(255)
+  name       String    @db.VarChar(255)
+  cnpj       String    @unique(map: "cnpj")
+  email      String    @unique(map: "email") @db.VarChar(255)
+  password   String    @db.VarChar(255)
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+  deleted_at DateTime?
+  status     STATUS
+  product    product[]
 }
 
-model customers {
-  id             Int       @id @default(autoincrement())
-  uuid           String    @db.VarChar(255)
-  user_id        Int?
-  name           String    @db.VarChar(255)
-  cpf            String    @db.VarChar(255)
-  address        String    @db.VarChar(255)
-  address_number String    @db.VarChar(255)
-  created_at     DateTime? @db.Timestamp(0)
-  updated_at     DateTime? @db.Timestamp(0)
-  deleted_at     DateTime? @db.Timestamp(0)
-  active         Boolean?  @default(true)
-  users          users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_UserCustomer")
-
-  @@index([user_id], map: "fk_UserCustomer")
-}
-
-model shopkeeper {
-  id         Int        @id @default(autoincrement())
-  uuid       String     @db.VarChar(255)
-  user_id    Int?
-  name       String     @db.VarChar(255)
-  created_at DateTime?  @db.Timestamp(0)
-  updated_at DateTime?  @db.Timestamp(0)
-  deleted_at DateTime?  @db.Timestamp(0)
-  active     Boolean?   @default(true)
-  cnpj       Int        @unique(map: "cnpj")
-  products   products[]
-  users      users?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_UserShops")
-
-  @@index([user_id], map: "fk_UserShops")
+enum STATUS {
+  INACTIVE
+  ACTIVE
 }
